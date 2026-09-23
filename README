@@ -1,0 +1,506 @@
+# 🖥️ System Monitor
+
+Um monitor de sistema desktop desenvolvido em **Python**, utilizando **psutil** e **Tkinter**, para acompanhar em tempo real informações sobre o uso de CPU, memória, disco e processos em execução.
+
+O projeto foi desenvolvido com foco em praticar **Python aplicado a um problema real**, organização de código, separação de responsabilidades, integração com bibliotecas do sistema operacional e construção de uma interface gráfica.
+
+---
+
+## 📌 Sobre o projeto
+
+O **System Monitor** é uma aplicação desktop capaz de coletar informações do computador e apresentá-las de forma organizada em uma interface gráfica.
+
+A aplicação utiliza a biblioteca `psutil` para acessar informações do sistema operacional, enquanto o `Tkinter` é utilizado para construir a interface.
+
+Entre as informações monitoradas estão:
+
+* Uso da CPU
+* Uso da CPU por núcleo
+* Quantidade de núcleos e threads
+* Frequência da CPU
+* Memória RAM
+* Memória SWAP
+* Uso do disco
+* Operações de leitura e escrita do disco
+* Processos em execução
+* Uso de CPU por processo
+* Uso de memória por processo
+* Quantidade de threads por processo
+* Status dos processos
+
+---
+
+## 🎯 Objetivos
+
+* Praticar Python através de um projeto real.
+* Aprender a utilizar a biblioteca `psutil`.
+* Trabalhar com informações do sistema operacional.
+* Separar a coleta de dados da lógica da aplicação e da interface.
+* Criar uma estrutura de projeto que possa ser expandida futuramente.
+* Desenvolver um projeto que possa ser utilizado como parte de um portfólio.
+
+---
+
+## 🚀 Funcionalidades
+
+### CPU
+
+O monitor coleta informações relacionadas ao processador, incluindo:
+
+* Utilização total da CPU.
+* Utilização individual de cada núcleo.
+* Quantidade de CPUs lógicas.
+* Frequência atual do processador.
+
+Exemplo de informações coletadas:
+
+```text
+CPU Usage: 32%
+
+CPU 0: 27%
+CPU 1: 41%
+CPU 2: 30%
+CPU 3: 31%
+
+Frequency: 3200 MHz
+```
+
+---
+
+### 🧠 Memória
+
+O sistema monitora a memória RAM disponível no computador.
+
+São coletados:
+
+* Memória total.
+* Memória utilizada.
+* Memória disponível.
+* Percentual de utilização.
+
+---
+
+### 💾 Disco
+
+O projeto utiliza `psutil.disk_usage()` para obter informações sobre o armazenamento.
+
+São monitorados:
+
+* Espaço total.
+* Espaço utilizado.
+* Espaço livre.
+* Percentual de utilização.
+
+---
+
+### ⚙️ Processos
+
+A aplicação consegue listar os processos atualmente em execução no sistema.
+
+Para cada processo podem ser obtidas informações como:
+
+* PID.
+* Nome.
+* Uso de CPU.
+* Uso de memória.
+* Número de threads.
+* Status.
+
+---
+
+## 🛠️ Tecnologias utilizadas
+
+### Python
+
+Linguagem principal utilizada no desenvolvimento.
+
+O Python foi escolhido por possuir boas bibliotecas para interação com informações do sistema operacional e permitir desenvolver rapidamente uma aplicação funcional.
+
+### psutil
+
+Biblioteca utilizada para obter informações sobre:
+
+* CPU
+* Memória
+* Disco
+* Processos
+* Threads
+* Sistema operacional
+
+A biblioteca é o principal componente responsável pela comunicação com as informações do sistema.
+
+### Tkinter
+
+Framework utilizado para construir a interface gráfica da aplicação.
+
+---
+
+## 📁 Estrutura do projeto
+
+```text
+system-monitor/
+│
+├── app/
+│   │
+│   ├── monitor/
+│   │   ├── cpu.py
+│   │   ├── disk.py
+│   │   ├── memory.py
+│   │   └── processes.py
+│   │
+│   ├── services/
+│   │   ├── metrics_service.py
+│   │   └── processes_service.py
+│   │
+│   └── ui/
+│       ├── dashboard.py
+│       └── process_table.py
+│
+├── main.py
+├── requirements.txt
+├── .gitignore
+└── README.md
+```
+
+---
+
+# 🏗️ Arquitetura
+
+O projeto utiliza uma separação simples entre **coleta de dados**, **regras de serviço** e **interface gráfica**.
+
+A estrutura pode ser representada da seguinte forma:
+
+```text
+                    ┌─────────────────────┐
+                    │      Tkinter        │
+                    │        UI           │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │      Services       │
+                    │                     │
+                    │ metrics_service     │
+                    │ processes_service   │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │       Monitor       │
+                    │                     │
+                    │ cpu.py              │
+                    │ memory.py           │
+                    │ disk.py             │
+                    │ processes.py        │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │       psutil        │
+                    │ Sistema operacional │
+                    └─────────────────────┘
+```
+
+A ideia dessa separação é evitar que a interface precise conhecer diretamente os detalhes de como as informações do sistema são coletadas.
+
+---
+
+# 📦 Camada `monitor`
+
+A pasta `monitor` contém as funções responsáveis diretamente pela coleta das informações do sistema.
+
+## `cpu.py`
+
+Responsável por coletar informações relacionadas à CPU.
+
+Principais informações:
+
+```python
+get_cpu_usage()
+get_cpu_per_core()
+get_cpu_count()
+get_cpu_frequency()
+```
+
+---
+
+## `memory.py`
+
+Responsável pelas informações relacionadas à memória.
+
+Principais funções:
+
+```python
+get_memory()
+get_swap_memory()
+```
+
+---
+
+## `disk.py`
+
+Responsável pela coleta de informações do armazenamento.
+
+Principais funções:
+
+```python
+get_disk_usage()
+get_disk_io()
+```
+
+---
+
+## `processes.py`
+
+Responsável pela coleta dos processos em execução.
+
+A coleta utiliza:
+
+```python
+psutil.process_iter()
+```
+
+para percorrer os processos disponíveis.
+
+As informações coletadas incluem:
+
+```text
+PID
+Nome
+CPU
+Memória
+Threads
+Status
+```
+
+---
+
+# ⚙️ Camada `services`
+
+A camada de services funciona como uma intermediária entre a coleta de dados e a interface.
+
+Isso evita colocar toda a lógica diretamente dentro do código da UI.
+
+---
+
+## `metrics_service.py`
+
+Responsável por reunir as principais métricas do sistema em uma única operação.
+
+Em vez de a interface precisar chamar diretamente:
+
+```python
+get_cpu_usage()
+get_memory()
+get_disk_usage()
+```
+
+ela pode trabalhar com uma estrutura centralizada de métricas.
+
+Essa abordagem facilita futuras alterações na forma como os dados são coletados.
+
+---
+
+## `processes_service.py`
+
+Responsável por trabalhar com os dados dos processos.
+
+Além da obtenção dos processos, o serviço permite trabalhar com processos de maior utilização de recursos.
+
+Por exemplo:
+
+```python
+get_top_cpu_processes()
+```
+
+e:
+
+```python
+get_top_memory_processes()
+```
+
+Isso permite criar uma visualização dos processos que mais consomem recursos do sistema.
+
+---
+
+# 🖼️ Camada `ui`
+
+A pasta `ui` contém a interface gráfica.
+
+## `dashboard.py`
+
+É responsável pelo dashboard principal da aplicação.
+
+Entre suas responsabilidades estão:
+
+* Criar a janela principal.
+* Organizar os componentes da interface.
+* Exibir as métricas.
+* Atualizar as informações.
+* Integrar os dados coletados com a interface.
+
+---
+
+## `process_table.py`
+
+Responsável pela tabela de processos.
+
+A intenção dessa separação é manter os detalhes da tabela fora do dashboard principal.
+
+Isso facilita futuras alterações na visualização dos processos sem precisar concentrar toda essa lógica em `dashboard.py`.
+
+---
+
+# 🔄 Fluxo da aplicação
+
+Quando o programa é iniciado:
+
+```text
+main.py
+   │
+   ▼
+Dashboard
+   │
+   ▼
+Services
+   │
+   ▼
+Monitor
+   │
+   ▼
+psutil
+   │
+   ▼
+Sistema operacional
+```
+
+Os dados coletados retornam pelo mesmo caminho:
+
+```text
+Sistema operacional
+        │
+        ▼
+      psutil
+        │
+        ▼
+     Monitor
+        │
+        ▼
+     Services
+        │
+        ▼
+        UI
+        │
+        ▼
+     Usuário
+```
+
+---
+
+# 💻 Requisitos
+
+Antes de executar o projeto, você precisa ter instalado:
+
+* Python 3.x
+* pip
+* Git (opcional, caso queira clonar o projeto)
+
+O projeto foi desenvolvido inicialmente em ambiente Windows.
+
+---
+
+# 📥 Instalação
+
+## 1. Clone o repositório
+
+```bash
+git clone https://github.com/daniel-asaph/system-monitor.git
+```
+
+Entre na pasta:
+
+```bash
+cd system-monitor
+```
+
+---
+
+## 2. Crie um ambiente virtual
+
+É recomendado utilizar um ambiente virtual para evitar conflitos entre dependências de diferentes projetos.
+
+No Windows:
+
+```bash
+python -m venv venv
+```
+
+Depois, ative o ambiente:
+
+```bash
+venv\Scripts\activate
+```
+
+Se estiver utilizando Git Bash:
+
+```bash
+source venv/Scripts/activate
+```
+
+Quando o ambiente estiver ativo, o terminal normalmente exibirá algo parecido com:
+
+```text
+(venv) C:\...\system-monitor>
+```
+
+---
+
+## 3. Instale as dependências
+
+Com o ambiente virtual ativado:
+
+```bash
+pip install -r requirements.txt
+```
+
+A principal dependência do projeto é:
+
+```text
+psutil
+```
+
+O Tkinter normalmente já acompanha instalações padrão do Python no Windows.
+
+---
+
+# ▶️ Executando o projeto
+
+Depois de instalar as dependências:
+
+```bash
+python main.py
+```
+
+A aplicação deverá abrir a janela principal do monitor.
+
+---
+
+# 🧪 Desenvolvimento
+
+Durante o desenvolvimento, o ambiente virtual pode ser ativado com:
+
+```bash
+venv\Scripts\activate
+```
+
+Para verificar a versão do Python:
+
+```bash
+python --version
+```
+
+Para verificar se o `psutil` está instalado:
+
+```bash
+pip show psutil
+```
